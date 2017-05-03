@@ -4,4 +4,5 @@ Git has a mutable indexs called stage.
 Git tracks changes of files.
 Creating a new branch is quick.
 git remote
-���Ǵ�ħ��
+我是大魔王
+我给你说，这里文件格式UTF-8

@@ -13,3 +13,9 @@
 	git remote add origin git@github.com:XXXX	//创建一个远端分支
 	git remote -v					//查看，远端分支
 	git push -u master origin			//push 绑定远端和本地branch
+
+这样一个简单的本地和github的配合就完成了
+
+其他的常见命令
+git pull		//从远端同步到本地
+git log			//获取仓库的每一次记录

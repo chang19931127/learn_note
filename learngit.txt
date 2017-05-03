@@ -1,0 +1,15 @@
+这里介绍几个命令，一组从创建到 push
+
+
+1:
+	git init
+	git add -a				//这里是提交所有文件
+	git commit -m "提交的内容"		//这里是提交的内容，说明
+	//这个时候，一个git 库就成功了
+
+2：
+	github 上创建一个repository ，然后就可以
+	创建 github分支，和本地分支绑定
+	git remote add origin git@github.com:XXXX	//创建一个远端分支
+	git remote -v					//查看，远端分支
+	git push -u master origin			//push 绑定远端和本地branch

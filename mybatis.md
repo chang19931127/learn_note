@@ -59,4 +59,28 @@ DefaultObjectFactory
   实际环境中，我们都会配置redis 等缓存，那么我们就需要对cache来进行属性的添加了 自定义缓存类  
 存储过程也是支持的
 
+##动态sql##
+可以通过某些语句，在不同的情况下生成不同的语句
+几个关键字if chosse(when,otherwise) trim(where,set) foreach
+bind关键字通过OGNL表达式自定义一个上下文变量，例如模糊查询的时候 传入的参数和%的拼接
+
+##MyBatis的解析和运行原理##
+两步走 读取配置文件，然后执行配置文件中的条目
+ 1，读取配置文件缓存到Configuration对象，用以创建SqlSessionFactory
+    采用Builder模式创建SqlSessionFactory
+      1，使用XMLConfigBuilder解析配置的xml文件，封装到Configuration
+      2，使用Configuration对象去构建SqlSessionFactory
+      构建影射器的内部主要是三个类
+      MappedStatement  影射器节点，select|insert|update|delete
+      SqlSource        提供BoundSql的地方 具体的几个实现，DynamicSqlSource，StaticSqlSource
+      BoundSql         结果对象，就是SqlSource通过对SQL和参数的联合解析得到的SQL和参数
+ 2，SqlSession的执行过程
+    获取Mapper，然后使用，这里getMapper 使用到了jdk的动态代理
+    SqlSession下的四大对象
+      Executor 执行器，执行下面Handler
+      StatementHandler 使用数据库的Statement(PreparedStatement)来执行
+      ParameterHandler 处理SQL参数的
+      ResultSetHandler 对数据集(ResultSet)进行封装处理的
+ 
+
  

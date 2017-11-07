@@ -1,6 +1,7 @@
 # mybatis #
 ## 代码逻辑 ##
                           配置或代码                  openSession()
+                          
 SqlSessionFactoryBuidler -------> SqlSessionFactory ----------------> SqlSession
 
 SqlSession可以直接通过API去执行一些crud，但我们通常不这么做

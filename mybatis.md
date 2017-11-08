@@ -50,14 +50,15 @@ DefaultObjectFactory
 在Mybatis中使用插件，就需要实现接口Interceptor
 ```java
 public interface Interceptor {
-
-  Object intercept(Invocation invocation) throws Throwable;
-
-  Object plugin(Object target);
-
-  void setProperties(Properties properties);
+  //直接覆盖拦截对象原有的方法，插件的核心方法，通过Invocation可以反射调用原来对象的方法
+  Object intercept(Invocation invocation) throws Throwable;
+  //target是被拦截对象，给被拦截对象生成一个代理对象，并返回
+  Object plugin(Object target);
+  //允许在plugin元素中配置所需参数， 方法在插件初始化时被调用一次，方便后续取出
+  void setProperties(Properties properties);
 
 }
+```
 
 ## 运行环境 ##
 配置事务管理器  Transaction       JdbcTransaction    ManageTransaction

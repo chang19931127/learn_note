@@ -232,24 +232,24 @@ bind关键字通过OGNL表达式自定义一个上下文变量，例如模糊查
       
       构建影射器的内部主要是三个类
       
-      MappedStatement  影射器节点，select|insert|update|delete
+      **MappedStatement**  影射器节点，select|insert|update|delete
       
-      SqlSource        提供BoundSql的地方 具体的几个实现，DynamicSqlSource，StaticSqlSource
+      **SqlSource**        提供BoundSql的地方 具体的几个实现，DynamicSqlSource，StaticSqlSource
       
-      BoundSql         结果对象，就是SqlSource通过对SQL和参数的联合解析得到的SQL和参数
+      **BoundSql**         结果对象，就是SqlSource通过对SQL和参数的联合解析得到的SQL和参数
       
  2，SqlSession的执行过程
     获取Mapper，然后使用，这里getMapper 使用到了jdk的动态代理
     
     SqlSession下的四大对象
     
-      Executor 执行器，执行下面Handler
+      **Executor** 执行器，执行下面Handler
       
-      StatementHandler 使用数据库的Statement(PreparedStatement)来执行
+      **StatementHandler** 使用数据库的Statement(PreparedStatement)来执行
       
-      ParameterHandler 处理SQL参数的是
+      **ParameterHandler** 处理SQL参数的是
       
-      ResultSetHandler 对数据集(ResultSet)进行封装处理的
+      **ResultSetHandler** 对数据集(ResultSet)进行封装处理的
  
 
  

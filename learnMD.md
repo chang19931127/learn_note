@@ -208,4 +208,4 @@ Markdown的使用者：
 
 关于其它扩展语法可参见具体工具的使用说明。
 
-`转自`
+`转自`[https://github.com/younghz/Markdown](https://github.com/younghz/Markdown)

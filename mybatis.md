@@ -98,24 +98,7 @@ MetaObject 通过这个对象的getValue和setValue
 那就不需要废话了，直接上一个实例，然后细细品味这个实例把，毕竟学习就是反复的实践，马克思观点，实践在实践哈哈
 
 mybatis的插件就如同拦截器一样，我们可以拦截四大对象哈哈！这里我们拦截的StatementHandler
-
-## 运行环境 ##
-配置事务管理器  Transaction       JdbcTransaction    ManageTransaction
-
- 当然事务管理器也可以自定义
- 
-配置数据源       大部分我们会配合spring来进行这方面的操作
-
- PooledDataSourceFactory     UnpooledDataSourceFactory     JndiDataSourceFactory 三种配置
- 
- 数据库池，非数据库池，jndi
- 
- 当然也可以自定义数据源工厂        DBCP C3P0 Durid等等
- 
- databaseIdProvider数据库厂商标示       在通过xml 中写sql 的指定能够方便移植，就是说改变我们的sql映射器
- 
- 当然这个也可以自定义，只需要实现DatabaseIdProvider接口即可
- ```java
+```java
  @Intercepts({
 	@Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class, Integer.class }) })
 public class MyPlugin implements Interceptor {
@@ -168,6 +151,23 @@ public class MyPlugin implements Interceptor {
 
 }
  ```
+## 运行环境 ##
+配置事务管理器  Transaction       JdbcTransaction    ManageTransaction
+
+ 当然事务管理器也可以自定义
+ 
+配置数据源       大部分我们会配合spring来进行这方面的操作
+
+ PooledDataSourceFactory     UnpooledDataSourceFactory     JndiDataSourceFactory 三种配置
+ 
+ 数据库池，非数据库池，jndi
+ 
+ 当然也可以自定义数据源工厂        DBCP C3P0 Durid等等
+ 
+ databaseIdProvider数据库厂商标示       在通过xml 中写sql 的指定能够方便移植，就是说改变我们的sql映射器
+ 
+ 当然这个也可以自定义，只需要实现DatabaseIdProvider接口即可
+
 ## 影射器 ##
 影射器就十分重要了，基本我们也是通过影射器来进行crud，
 

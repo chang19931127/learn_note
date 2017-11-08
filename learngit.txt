@@ -19,3 +19,76 @@
 其他的常见命令
 git pull		//从远端同步到本地
 git log			//获取仓库的每一次记录
+
+
+
+
+
+Windows下
+我们尽可能去使用 git-bash.exe 这个程序来进行环境搭建
+
+
+察看git版本号
+git --version
+
+全局配置
+配置用户名，邮件
+git config --global user.name xxx
+git config --global user.email xxx
+配置 避免多人提交，合并模式
+git config --global branch.autosetuprebase always
+列出所有配置
+git config --list
+这些配置文件会出现在当前用户目录下的.gitconfig
+
+初始化一个git仓库
+git init
+
+增加文件---工作区-----------到缓存区
+git add file
+
+提交文件到版本库     -----从暂存区到版本库
+git commit -m "commit message"
+
+
+这里添加了很多内容
+
+
+首先本地如果想要和远程客户端，进行连接，需要配置一个ssh key 这是一种加密，但是公司里面使用的是https
+https://alm-github.systems.uk.hsbc/43994897/learngit.git 
+通过使用ssh-------来创建秘要
+ssh-keygen -t rsa -C "richard.z.d.chang@noexternalmail.hsbc.com"
+拥有了秘要就可以可 远端git通过ssh 来进行访问通信
+git@alm-github.systems.uk.hsbc:43994897/learngit.git
+测试
+ssh -T alm-github.systems.uk.hsbc
+
+
+
+由于 git是基于分支的，因此我们push也需要到对应的分支
+git push -u origin master
+
+更新推送到远端的
+git push
+
+git checkout -b text-pr      切换一个分支 分支到test-pr
+
+接受远端的
+git pull 
+
+创建新的分支: git branch <branchname>
+察看所有的分支：git branch
+			创建分支的时候，此时此刻，之前的分支内容相同
+切换分支：git checkout <branch>          这里给一个参数b的话就切换分支，并创建分支
+			切换分支后，提交的仅仅是当前分支的内容
+			这样不同的分支就可以进行不同的操作
+合并分支：git merge <branch>
+			将 branch 合并到 当前分支，但是 branch 并不会消失
+删除分支：git branch -d <branch>
+			删除 branch
+合并分支：git rebase <branch>
+			保留日志的合并
+
+
+
+

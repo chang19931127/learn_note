@@ -154,7 +154,7 @@ public class MyPlugin implements Interceptor {
 
 }
  ```
- 配置文件
+ 配置文件 mybatis=config.xml
 ```xml
 <plugins>
 	<plugin interceptor="me.czd.MyPlugin">

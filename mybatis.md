@@ -119,9 +119,11 @@ public class MyPlugin implements Interceptor {
 	    object = metaStatementHandler.getValue("h");
 	    metaStatementHandler = SystemMetaObject.forObject(object);
 	}
+	//此时的statementHandler 就是最原始的目标类
 	statementHandler = (StatementHandler) object;
 	String sql = (String) metaStatementHandler.getValue("delegate.boundSql.sql");
 	Long parameterObject = (Long) metaStatementHandler.getValue("delegate.boundSql.parameterObject");
+	System.out.println("写自己的处理逻辑把");
 	System.out.println("执行的SQL:[" + sql + "]");
 	System.out.println("参数:[" + parameterObject + "]");
 	System.out.println("before.....");

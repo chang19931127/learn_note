@@ -250,6 +250,8 @@ bind关键字通过OGNL表达式自定义一个上下文变量，例如模糊查
       **ParameterHandler** 处理SQL参数的是
       
       **ResultSetHandler** 对数据集(ResultSet)进行封装处理的
+      
+   `作者常振东`
  
 
  

@@ -45,7 +45,8 @@ DefaultObjectFactory
 当然我们也可以自定义
 
 ## 插件功能 ##
-使用插件就意味着在修改Mybatis的底层封装，因此我们只有写出好的插件才不至于破坏Mybatis的规则，明白四大对象，熟悉整体流程
+使用插件就意味着在修改Mybatis的底层封装，因此我们只有写出好的插件才不至于破坏Mybatis的规则，明白四大对象，熟悉整体流程，插件也可以说就是Mybatis给我们使用者提供的一个后门，让我们使用者可以通过这个来对底层进行某些修改来根据我们自己的应用场景
+
 
 在Mybatis中使用插件，就需要实现接口Interceptor
 ```java
@@ -86,7 +87,7 @@ public class Invocation {
 
 在编写插件的时候，需要我们学习一个Mybatis提供的工具类
 
-MetaObject
+MetaObject 通过这个对象的getValue和setValue
 
 - MetaObject forObject(Object object,ObjectFactory objectFactory,ObjectWrapper Factory objectWrapperFactory)方法用于包装对象。这个方法已经不再使用了，而是用MyBatis提供的SystemMetaObject.forObject(Object obj)
 
@@ -94,6 +95,9 @@ MetaObject
 
 - void setValue(String name,Object value)方法用于修改对象属性值，支持OGNL
 
+那就不需要废话了，直接上一个实例，然后细细品味这个实例把，毕竟学习就是反复的实践，马克思观点，实践在实践哈哈
+
+mybatis的插件就如同拦截器一样，我们可以拦截四大对象哈哈！这里我们拦截的StatementHandler
 
 ## 运行环境 ##
 配置事务管理器  Transaction       JdbcTransaction    ManageTransaction
@@ -111,7 +115,59 @@ MetaObject
  databaseIdProvider数据库厂商标示       在通过xml 中写sql 的指定能够方便移植，就是说改变我们的sql映射器
  
  当然这个也可以自定义，只需要实现DatabaseIdProvider接口即可
- 
+ ```java
+ @Intercepts({
+	@Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class, Integer.class }) })
+public class MyPlugin implements Interceptor {
+
+    private Properties prop = null;
+
+    /**
+     * @param mybatis的代理对象封装的类
+     * @return 返回预编译后的PreparedStatement
+     */
+    public Object intercept(Invocation invocation) throws Throwable {
+	StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
+	// 进行邦定
+	MetaObject metaStatementHandler = SystemMetaObject.forObject(statementHandler);
+	Object object = null;
+	// 分离代理对象链，由于目标可能被多个拦截器拦截，从而形成多次代理，通过循环可以分离出最原始的目标类
+	while (metaStatementHandler.hasGetter("h")) {
+	    object = metaStatementHandler.getValue("h");
+	    metaStatementHandler = SystemMetaObject.forObject(object);
+	}
+	statementHandler = (StatementHandler) object;
+	String sql = (String) metaStatementHandler.getValue("delegate.boundSql.sql");
+	Long parameterObject = (Long) metaStatementHandler.getValue("delegate.boundSql.parameterObject");
+	System.out.println("执行的SQL:[" + sql + "]");
+	System.out.println("参数:[" + parameterObject + "]");
+	System.out.println("before.....");
+	// 如果当前代理的是一个非代理对象，就回调真实拦截对象的
+	// 如果不是，那么它会回调下个插件代理对象的invoke方法
+	Object obj = invocation.proceed();
+	System.out.println("after......");
+	return obj;
+    }
+
+    /**
+     * 生成代理对象
+     * 
+     * @param 被拦截对象
+     * @return 代理对象
+     */
+    public Object plugin(Object target) {
+	return Plugin.wrap(target, this);
+    }
+
+    /**
+     * @param props配置参数
+     */
+    public void setProperties(Properties properties) {
+	this.prop = properties;
+    }
+
+}
+ ```
 ## 影射器 ##
 影射器就十分重要了，基本我们也是通过影射器来进行crud，
 

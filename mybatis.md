@@ -59,6 +59,37 @@ public interface Interceptor {
 
 }
 ```
+插件实在XMLConfigBuilder中进行初始化的，因此插件实例对象一开始就被初始化，使用的时候直接拿出来用就好
+
+插件使用的是责任链模式，interceptorChain，就是我们所说的，对对象代理，然后对代理后的对象再代理
+
+被代理对象，反射方法，参数都被封装到Invocation中
+```java
+public class Invocation {
+
+  private final Object target;
+  private final Method method;
+  private final Object[] args;
+
+  public Invocation(Object target, Method method, Object[] args) {
+    this.target = target;
+    this.method = method;
+    this.args = args;
+  }
+ /** 省略getset **/
+  public Object proceed() throws InvocationTargetException, IllegalAccessException {
+    return method.invoke(target, args);
+  }
+
+}
+```java
+在编写插件的时候，需要我们学习一个Mybatis提供的工具类
+
+MetaObject
+
+- MetaObject forObject(Object object,ObjectFactory objectFactory,ObjectWrapper Factory objectWrapperFactory)方法用于包装对象。这个方法已经不再使用了，而是用MyBatis提供的SystemMetaObject.forObject(Object obj)
+- Object getValue(String name) 方法用于获取对象属性值，支持OGNL
+- void setValue(String name,Object value)方法用于修改对象属性值，支持OGNL
 
 ## 运行环境 ##
 配置事务管理器  Transaction       JdbcTransaction    ManageTransaction

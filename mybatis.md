@@ -149,10 +149,19 @@ public class MyPlugin implements Interceptor {
      */
     public void setProperties(Properties properties) {
 	this.prop = properties;
+	System.out.println("dbType = " + this.prop.get("dbType"));
     }
 
 }
  ```
+ 配置文件
+```xml
+<plugins>
+	<plugin interceptor="me.czd.MyPlugin">
+		<property name="dbType" value="mysql">
+	</plugin>
+</plugins>
+```
 ## 运行环境 ##
 配置事务管理器  Transaction       JdbcTransaction    ManageTransaction
 

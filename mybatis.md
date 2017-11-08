@@ -192,7 +192,7 @@ public class MyPlugin implements Interceptor {
     
      useGeneratedKeys 设置主键回填，可以从库中拿到主键来被mybatis使用
      
-特殊字符串的处理(#和$)
+特殊字符串的处理(#和$) 一般使用# 底层用的是PreparedStatment ，$类似于占位符
 
 延迟加载，针对N+1问题，就是级联的时候，
 

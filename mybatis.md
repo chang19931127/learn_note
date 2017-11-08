@@ -45,6 +45,19 @@ DefaultObjectFactory
 当然我们也可以自定义
 
 ## 插件功能 ##
+使用插件就意味着在修改Mybatis的底层封装，因此我们只有写出好的插件才不至于破坏Mybatis的规则，明白四大对象，熟悉整体流程
+
+在Mybatis中使用插件，就需要实现接口Interceptor
+```java
+public interface Interceptor {
+
+  Object intercept(Invocation invocation) throws Throwable;
+
+  Object plugin(Object target);
+
+  void setProperties(Properties properties);
+
+}
 
 ## 运行环境 ##
 配置事务管理器  Transaction       JdbcTransaction    ManageTransaction

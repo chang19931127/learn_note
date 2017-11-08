@@ -1,6 +1,6 @@
 # mybatis #
 ## 代码逻辑 ##
-                          配置或代码                  openSession()
+                               配置或代码                  openSession()
                           
 SqlSessionFactoryBuidler -------> SqlSessionFactory ----------------> SqlSession
 

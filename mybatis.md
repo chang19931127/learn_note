@@ -82,7 +82,7 @@ public class Invocation {
   }
 
 }
-```java
+```
 
 在编写插件的时候，需要我们学习一个Mybatis提供的工具类
 

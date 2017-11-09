@@ -81,7 +81,8 @@ Role savedRole = (Role)redisTemplate.execute(callBack);
      由于Redis读/写操作很快，因此网络传递就是瓶颈，如果某一个传输了很多个命令来执行，传统情况就要等待下去，但由于流水线的存在，那么很快的区处理命令，流水线是一种通讯协议(书上看得),可以理解成数据库中的批处理把
     
      javaAPI
-     ```java
+     
+```java
      Jedis jedis = pool.getResource();
      Piepline pipeline = jedis.pipelined();
      for(int i = 0; i<10000 ;i++){
@@ -90,10 +91,11 @@ Role savedRole = (Role)redisTemplate.execute(callBack);
           pipeline.get("pipeline_key_"+j);
      }
      List result = pipeline.syncAndReturnAll();
-     ```
+```
      
      Spring RedisTemplate
-     ```java
+     
+```java
      SessionCallable callBack = (SessionCallback) (RedisOperations ops) -> {
           for(int i = 0 ; i < 10000 ; i++){
                int j = i + 1;
@@ -103,6 +105,6 @@ Role savedRole = (Role)redisTemplate.execute(callBack);
           return null;
      };
      List resultList = redisTemplate.executePipelined(callBack);
-     ```
+```
 
      

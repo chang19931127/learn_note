@@ -5,9 +5,35 @@
    
    Redis在JavaWeb中一般两个使用场景，一个是缓存，另一个是需要高速读/写的场合
    
+## Redis 和 Java结合 ##
+
+代码就不再粘了，这里指出两个特例，都是配合Spring使用的
+
+来自同一个Redis连接池的不同Redis连接,直接使用RedisTemplate
+```java
+Role role = new Role();
+redisTemplate.opsForValue().set("role_1",role);
+Role role1 = (Role)redisTemplate.opsForValue().get("role_1");
+```
+
+来自同一个Redis连接池的相同Redis连接，使用SessionCallback或者RedisCallback
+```java
+Role role = new Role();
+SessionCallback<Role> callBack = new SessionCallback<>(){
+  @Override
+  public Role execute(RedisOperations ops) throws DataAccessException{
+      ops.boundValueOps("role_1").set(role);
+      return (Role)ops.boundValueOps("role_1").get();
+  }
+};
+Role savedRole = (Role)redisTemplate.execute(callBack);
+```
+
 ## Redis 的6种数据结构 ##
 
 - STRING(字符串)
+
+
    
 - LIST(列表)
    

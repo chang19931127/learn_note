@@ -71,7 +71,38 @@ Role savedRole = (Role)redisTemplate.execute(callBack);
      Redis事务是通过NULTI-EXEC的命令组合来实现的，事务是一个被隔离的操作，事务中的方法都会被Redis进行序列化并按顺序执行，事务在执行的过程中也不会被其他客户端的命令所打断，事务是一个原子性的操作，他要么全部执行，要么就什么都不执行。
      
      因为事务需要的是多个指令，并且存在于一个连接中，那么就要求的是开头所说的Spring中通过SessionCallback接口进行处理，那么Redis中使用事务的过程就是
-- 开启事务，
+- 使用watch命令(监控一个key)，看这个key在执行完事务的时候是否发生改变(CAS，也就是乐观锁)
+- 使用mulit命令来开启事务，
 - 命令进入队列，
-- 执行事务。
+- 使用exec命令来执行事务。
 
+## Redis 流水线 ##
+     
+     由于Redis读/写操作很快，因此网络传递就是瓶颈，如果某一个传输了很多个命令来执行，传统情况就要等待下去，但由于流水线的存在，那么很快的区处理命令，流水线是一种通讯协议(书上看得),可以理解成数据库中的批处理把
+    
+     javaAPI
+     ```java
+     Jedis jedis = pool.getResource();
+     Piepline pipeline = jedis.pipelined();
+     for(int i = 0; i<10000 ;i++){
+          int j = i+1;
+          pipeline.set("pipeline_key_"+j,pipeline_value_"+j);
+          pipeline.get("pipeline_key_"+j);
+     }
+     List result = pipeline.syncAndReturnAll();
+     ```
+     
+     Spring RedisTemplate
+     ```java
+     SessionCallable callBack = (SessionCallback) (RedisOperations ops) -> {
+          for(int i = 0 ; i < 10000 ; i++){
+               int j = i + 1;
+               ops.boundValueOps("pipeline_key_"+j).set("pipeline_value_"+j);
+               ops.boundValueOps("pipeline_key_"+j);
+          }
+          return null;
+     };
+     List resultList = redisTemplate.executePipelined(callBack);
+     ```
+
+     

@@ -107,4 +107,14 @@ Role savedRole = (Role)redisTemplate.execute(callBack);
      List resultList = redisTemplate.executePipelined(callBack);
 ```
 
+## Redis 发布订阅 ##
+
+Redis 支持发布订阅模式
+
+两点，要有发送的消息渠道，要有订阅者，订阅这个频道
+
+## Redis 超时命令 ##
+
+同样Redis支持超时命令，明白什么意思吧
+
      

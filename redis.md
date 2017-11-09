@@ -42,19 +42,19 @@ Role savedRole = (Role)redisTemplate.execute(callBack);
 
 - STRING(字符串)
 
-set key value 设置键值对
+ set key value 设置键值对
 
-get key 通过键获取值
+ get key 通过键获取值
 
-del key 通过key，删除键值对
+ del key 通过key，删除键值对
 
-strlen 求key指向字符串的长度
+ strlen 求key指向字符串的长度
 
-getset key value 修改原来的key，并返回旧值
+ getset key value 修改原来的key，并返回旧值
 
-getrange key start end 获取子串
+ getrange key start end 获取子串
 
-append key value 将新的字符串value，加入到原来key指向的字符串末
+ append key value 将新的字符串value，加入到原来key指向的字符串末
 - LIST(列表)
    
 - SET(集合)

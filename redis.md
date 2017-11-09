@@ -7,16 +7,16 @@
    
 ## Redis 的6种数据结构##
 
-   - STRING(字符串)
+- STRING(字符串)
    
-   - LIST(列表)
+- LIST(列表)
    
-   - SET(集合)
+- SET(集合)
    
-   - HASH(哈希散列表)
+- HASH(哈希散列表)
    
-   - ZSET(有序集合)
+- ZSET(有序集合)
    
-   -HyperLogLog(基数)
+- HyperLogLog(基数)
    
      作用是计算重复的值，已确定存储的数量，只提供基数的运算，不提供返回的功能

@@ -7,6 +7,15 @@
    
 ## Redis 和 Java结合 ##
 
+这里有一点，就是Redis 数据结构比较单一，我们java中使用的都是对象，因此我们需要将对象序列化,org.springframework.data.redis.serializer序列化
+```xml
+<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+  <property name="connectionFactory" ref="connectionFactory"/>
+  <property name="keySerializer" ref="X"/>
+  <property name="valueSerializer" ref="X"/>
+</bean>
+```
+
 代码就不再粘了，这里指出两个特例，都是配合Spring使用的
 
 来自同一个Redis连接池的不同Redis连接,直接使用RedisTemplate
@@ -33,8 +42,19 @@ Role savedRole = (Role)redisTemplate.execute(callBack);
 
 - STRING(字符串)
 
+set key value 设置键值对
 
-   
+get key 通过键获取值
+
+del key 通过key，删除键值对
+
+strlen 求key指向字符串的长度
+
+getset key value 修改原来的key，并返回旧值
+
+getrange key start end 获取子串
+
+append key value 将新的字符串value，加入到原来key指向的字符串末
 - LIST(列表)
    
 - SET(集合)

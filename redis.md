@@ -169,7 +169,7 @@ auto-aof-rewrite-min-size
 
 ## Redis 主从同步(复制)
 
-数据量不断的变大，对Redis的请求数量变多，那么单机Redis肯定不够用，就要考虑分布式Redis集群了，常用的就是，redis自己提供了分布式方案，也可以使用Codis集群方案，Twemproxy方案
+数据量不断的变大，对Redis的请求数量变多，那么单机Redis肯定不够用，就要考虑分布式Redis集群了，常用的就是，redis自己提供了分布式方案，也可以使用Codis集群方案，Twemproxy方案 [codis](https://github.com/CodisLabs/codis/)
 
 还是多了解下分布式的原理，这样肯定有好处
 

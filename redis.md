@@ -128,6 +128,7 @@ Redis是一个内存的数据库，那么断电了，不就会造成很大的影
 - 只追加文件(Append-Only File,AOF),其作用就是当Redis执行写命令后，在一定的条件下执行过的写命令依次保存在Redis的文件中
 
 Redis可以任意使用这两种，或者其中一种，或者都不用,在Redis的配置文件中可以进行配置
+
 redis.conf
 ```
 #当900秒执行一个写命令，启动快照备份
@@ -138,5 +139,46 @@ save 300 10
 save 60 10000
 #bgsave异步保存命令，另外启动一条线程，save是阻塞的，为什么出现这个是因为Redis执行save命令的时候禁止写入命令，解决冲突么，我作你不作
 stop-writes-on-bgsave-error yes
+#对rdb文件进行检验，rdb文件就是快照备份文件
+rdbchecksum yes
+#指名rdb数据持久化文件
+dbfilename dump.rdb
+#是否启动AOF方法进行持久化
+appendonly no
+#持久化文件
+appendfilename "appendonly.aof"
+#同步追加，配置频率always，everysec，no
+appendfsync always
+#是否在后台AOF文件rewrite期间调用fsync
+no-appendfsync-on-rewrite no
+#指定Redis重写AOF文件的条件，默认是100，表示与上次rewrite的AOF文件大小相比较,百分比
+auto-aof-rewrite-percentage 100
+#触发rewrite的AOF文件大小，如果小于该值，不管上面百分比怎么设置，也会触发rewrite
+auto-aof-rewrite-min-size
 ```
-     
+
+## Redis 内存不足的回收策略
+- volatile-lru:采用最近使用最少的淘汰策略，Redis将回收那些超时的键值对，使用lru
+- allkeys-lru:采用淘汰最近最少使用的策略，Redis将针对所有键值对进行lru
+- volatile-random:采用随机的淘汰策略，Redis将回收那些超时的键值对，使用random
+- allkeys-random:采用随机的淘汰策略，Redis将针对所有键值对进行，random
+- volatile-ttl:采用删除存活时间最短的键值对策略
+- noeviction:不进行回收，如果内存满了，就报错    默认行为
+
+上面的算法都不是很绝对，为了性能，就是一个大致的回收效果，
+
+## Redis 主从同步(复制)
+
+数据量不断的变大，对Redis的请求数量变多，那么单机Redis肯定不够用，就要考虑分布式Redis集群了，常用的就是，redis自己提供了分布式方案，也可以使用Codis集群方案，Twemproxy方案
+
+还是多了解下分布式的原理，这样肯定有好处
+
+主从同步，通常有这样的感觉，就是说，一主多从，写用于主，读用于从，这样主改变了，复制到从中，就可以了，又是又可以多主多从，反正分布式很大很奇妙
+
+这里又存在一个问题，就是如果我们的集群中的机器挂了怎么办，哈哈，纠结了吧。
+
+这里就涉及到了主从切换，我们可以人工取解决，交给运维，但是风险太大，那么这里就使用哨兵(Sentinel)模式
+
+哨兵来帮助我们检测master是否宕机，可以通过配置文件来进行修改，哨兵是作为一个单独的进程执行的，先启动哨兵，在启动redis服务器进程
+
+哨兵提供了一套Redis哨兵的API来进行操作的，也就是说我们可以通过编程来使用哨兵，貌似这里使用哨兵，只是配置哨兵的属性，哨兵的功能还是redis来进行操作的

@@ -119,6 +119,6 @@ Redis 支持发布订阅模式
 
 ## Redis 基础配置文件
 
- 作为一个软件，必不可少的就是存在一些配置文件，我们使用者可以通过配置文件来更改软件给我们提供的功能，同样Redis也给我们提供了配置文件，文件就是redis.window.conf(Windows系统下)，redis.conf(Linux系统下)
+    作为一个软件，必不可少的就是存在一些配置文件，我们使用者可以通过配置文件来更改软件给我们提供的功能，同样Redis也给我们提供了配置文件，文件就是redis.window.conf(Windows系统下)，redis.conf(Linux系统下)
 
      

@@ -192,7 +192,9 @@ public class MyPlugin implements Interceptor {
     
      useGeneratedKeys 设置主键回填，可以从库中拿到主键来被mybatis使用
      
-特殊字符串的处理(#和$) 一般使用# 底层用的是PreparedStatment ，$类似于占位符
+特殊字符串的处理(#和$) 
+- #{} 表示一个占位符号，通过#{}可以实现preparedStatement向占位符中设置值，自动进行java类型和jdbc类型转换，可以有效防止sql注入，
+- ${} 表示拼接sql串，通过${}将parameterType传入的内容拼接在sql中且不进行jdbc类型转换，
 
 延迟加载，针对N+1问题，就是级联的时候，
 
@@ -217,7 +219,7 @@ public class MyPlugin implements Interceptor {
 
 几个关键字if chosse(when,otherwise) trim(where,set) foreach
 
-bind关键字通过OGNL表达式自定义一个上下文变量，例如模糊查询的时候 传入的参数和%的拼接
+bind关键字通过OGNL表达式自定义一个上下文变量(ognl，对象.属性.属性来获取值)，例如模糊查询的时候 传入的参数和%的拼接
 
 ## MyBatis的解析和运行原理 ##
 两步走 读取配置文件，然后执行配置文件中的条目

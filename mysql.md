@@ -54,17 +54,17 @@ UPDATE user1 a JOIN (SELECT b.user_name FROM user1 a JOIN user2 b ON a.user_name
 
 ```sql
 SELECT a.user_name,a.over,(SELECT over FROM user2 b WHERE a.user_name = b.user_name) AS over2 FROM user1 a ; 
-效率太低
-修改后
+#效率太低
+#修改后
 SELECT a.user_name,a.over,b.over AS over2 FROM user1 a LEFT JOIN user2 b ON a.user_name = b.user_name;
 ```
 
 - 使用join来优化聚合子查询
 
 ```sql
-查询四人组打怪最多的时间
+#查询四人组打怪最多的时间
 SELECT a.user_name,b.timestr,b.kills FROM user1 a JOIN user_kills b ON a.id = b.user_id WHERE b.kills = (SELECT MAX(c.kills) FROM user_kill c WHERE c.user_id = b.user_id);
-优化下
+#优化下
 SELECT a.user_name,b.timestr,b.kills FROM user1 a JOIN user_kills b ON a.id = b.user_id JOIN user_kills c ON c.user_id = b.user_id GROUP BY a.user_name,b.timestr,b.kills HAVING b.kills = MAX(c.kills);
 ```
 
@@ -75,8 +75,8 @@ SELECT a.user_name,b.timestr,b.kills FROM user1 a JOIN user_kills b ON a.id = b.
 
 ```sql
 SELECT a.user_name,b.timestr,b.kills FROM user1 a join user_kills FROM user1 a JOIN user_kills b ON a.id = b.user_id WHERE user_name = '孙悟空' ORDER BY b.kills DESC LIMIT 2；
-取经四人组杀人排行前两条
-孙悟空，猪八戒，沙僧，要执行三次，
-优化后
+#取经四人组杀人排行前两条
+#孙悟空，猪八戒，沙僧，要执行三次，
+#优化后
 SELECT d.user_name,c.timestr,kills FROM (SELECT user_id,timestr,kills,(SELECT count(*) FROM user_kills b WHERE b.user_id = a.user_id and a.kills < b.kills) AS cnt FROM user_kills a GROUP BY user_id,timestr,kills) c JOIN user1 d ON c.user_id = d.id WHERE cnt <= 2;
 ```

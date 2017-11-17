@@ -91,9 +91,14 @@ SELECT d.user_name,c.timestr,kills FROM (SELECT user_id,timestr,kills,(SELECT co
 SELECT a.user_name,sum(kills) FROM user1 a join user_kills b ON a.id = b.user_id GROUP BY a.user_name 
 --行转换列
 SELECT sum(CASE WHEN user_name = '孙悟空' THEN kills END) as '孙悟空',
-       sum(CASE WHEN user_name = '孙悟空' THEN kills END) as '猪八戒',
+       sum(CASE WHEN user_name = '猪八戒' THEN kills END) as '猪八戒',
        sum(CASE WHEN user_name = '沙僧' THEN kills END) as '沙僧'
        FROM user1 a JOIN user_kills b ON a.id = b.user_id;
+--进行列转行场景，属性拆分,ETL数据处理
+--利用序列表我们需要有一张序列表，就一行整数序列tb_sequence
+SELECT user_name,REPLACE(SUBSTRING(SUBSTRING_INDEX(mobile,',',a.id),CHAR_LENGTH(SUBSTRING_INDEX(mobile,',',a.id-1))+1),',','') 
+       AS mobile FROM tb_sequence a CROSS JOIN(SELECT user_name,CONCAT(mobile,',') AS mobile,LENGTH(mobile) - LWNGTH(REPLACE(
+       mobile,',','')) +1 size FROM user1 b) b ON a.id <= b.size
 ```
 
 - 如何生成唯一序列号

@@ -10,7 +10,7 @@
 SELECT a.user_name,a.over,b.over FROM user1 a INNER JOIN user2 b ON a.user_name=b.user_name;
 ```
 
--左外连接
+- 左外连接
 
 左全部
 
@@ -18,7 +18,7 @@ SELECT a.user_name,a.over,b.over FROM user1 a INNER JOIN user2 b ON a.user_name=
 SELECT a.user_name,a.over,b.over FROM user1 a LEFT JOIN user2 b ON a.user_name = b.user_name;
 ```
 
--右外连接
+- 右外连接
 
 右全部
 
@@ -26,7 +26,7 @@ SELECT a.user_name,a.over,b.over FROM user1 a LEFT JOIN user2 b ON a.user_name =
 SELECT b.user_name,b.over,a.over FROM user1 a RIGHT JOIN user2 b ON a.user_name = b.user_name WHERE a.user_name IS NOT NULL;
 ```
 
--全连接
+- 全连接
 
 全部连接
 
@@ -34,7 +34,7 @@ SELECT b.user_name,b.over,a.over FROM user1 a RIGHT JOIN user2 b ON a.user_name 
 SELECT a.user_name,a.over,b.over FROM user1 a LEFT JOIN user2 b ON a.user_name = b.user_name UNION ALL SELECT b.user_name,b.over,a.over FROM user1 a RIGHT JOIN user2 b ON a.user_name = b.user_name;
 ```
 
--交叉连接
+- 交叉连接
 
 笛卡尔基，CROSS JOIN 不需要连接条件，实际中用处不大
 

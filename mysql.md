@@ -87,7 +87,7 @@ SELECT d.user_name,c.timestr,kills FROM (SELECT user_id,timestr,kills,(SELECT co
 
 
 ```sql
---进行行转列场景，报表统计,汇总显示
+--进行行转列场景，报表统计,汇总显示,其实可以使用union来连接，但是太麻烦
 SELECT a.user_name,sum(kills) FROM user1 a join user_kills b ON a.id = b.user_id GROUP BY a.user_name 
 --行转换列
 SELECT sum(CASE WHEN user_name = '孙悟空' THEN kills END) as '孙悟空',
@@ -99,17 +99,58 @@ SELECT sum(CASE WHEN user_name = '孙悟空' THEN kills END) as '孙悟空',
 SELECT user_name,REPLACE(SUBSTRING(SUBSTRING_INDEX(mobile,',',a.id),CHAR_LENGTH(SUBSTRING_INDEX(mobile,',',a.id-1))+1),',','') 
        AS mobile FROM tb_sequence a CROSS JOIN(SELECT user_name,CONCAT(mobile,',') AS mobile,LENGTH(mobile) - LWNGTH(REPLACE(
        mobile,',','')) +1 size FROM user1 b) b ON a.id <= b.size
+--另一种结构，提供一个装备表，我们需要查询出来，谁有什么装备 
+--装备表结果集
+SELECT user_name,arms,clothing,shoe FROM user1 a JOIN user1_equipment b ON a.id = b.user_id;
+-- 列转行
+select user_name,
+case when c.id = 1 then 'arms'
+     when c.id = 2 then 'clothing'
+     when c.id = 3 then 'shoe'
+end as equipment,
+coalesce(case when c.id = 1 then arms end,
+case shen c.id = 2 then clothing end,
+case when c.id = 3 then shoe end) as eq_name
+from user1 a
+join user1_equipment b on a.id = b.user_id
+cross join th_sequence c where c.id <= 3 
+order by user_name
+
 ```
 
 - 如何生成唯一序列号
 
-``sql
-
+```sql
+--使用场景，数据库主键，业务序列号，订单号，车票号
+--数据库自己也可以生成，mysql 是 AUTO_INCREMENT，优先选择系统提供的序列号生成方式
+--创建表的时候，auto_increment mysql 自生成序列，容易产生空洞，就是1,2,3,5   4没了
+--使用sql方式来生成 格式YYYYMMDDNNNNNNN
+--这里使用的是存储过程
+DECLARE v_cnt INT;
+DECLARE v_timestr INT;
+DECLARE rowcount BIGINT;
+SET v_timestr = DATE_FORMAT(NOW(),'%Y%m%d');
+SELECT ROUND(RAND()*100,0) + 1 INTO v_cnt;
+START TRANSACTION;
+     UPDATE order_seq SET order_sn = order_sn + v_cnt WHERE timestr = v_timestr;
+     IF ROW_COUNT() = 0 THEN
+         INSERT INTO order_seq(timestr,order_sn) VALUES(v_timestr,v_cnt);
+     END IF;
+     SELECT CONCAT(v_timestr,LPAD(order_sn,7,0)) AS order_sn
+         FROM order_seq WHERE timestr = v_timestr;
+COMMIT;
 ```
 
 - 如何删除重复数据
 
 ```sql
-
+--如何查询数据是否重复? 利用GROUP BY 和 having从句
+select user_name,count(*) from user1_test group by user_name having count(*)>1;
+--如何删除重复数据，对于相同数据保留ID最大的
+DELETE a FROM user1_test a JOIN(
+SELECT user_name,COUNT(*),MAX(id) AS id
+FROM user1_test GROUP BY user_name HAVING COUNT(*) > 1) b
+ON a.user_name = b.user_name WHERE a.id < b.id;
+-- 更加复杂的重复数据删除，例如table 中的mobile 重复了，mobile 中有多个mobile 但是有几个mobile 重复
 ```
 

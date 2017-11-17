@@ -80,3 +80,31 @@ SELECT a.user_name,b.timestr,b.kills FROM user1 a join user_kills FROM user1 a J
 #优化后
 SELECT d.user_name,c.timestr,kills FROM (SELECT user_id,timestr,kills,(SELECT count(*) FROM user_kills b WHERE b.user_id = a.user_id and a.kills < b.kills) AS cnt FROM user_kills a GROUP BY user_id,timestr,kills) c JOIN user1 d ON c.user_id = d.id WHERE cnt <= 2;
 ```
+
+## SQL 开发技巧
+
+- 如何进行行列转换
+
+
+```sql
+--进行行转列场景，报表统计,汇总显示
+SELECT a.user_name,sum(kills) FROM user1 a join user_kills b ON a.id = b.user_id GROUP BY a.user_name 
+--行转换列
+SELECT sum(CASE WHEN user_name = '孙悟空' THEN kills END) as '孙悟空',
+       sum(CASE WHEN user_name = '孙悟空' THEN kills END) as '猪八戒',
+       sum(CASE WHEN user_name = '沙僧' THEN kills END) as '沙僧'
+       FROM user1 a JOIN user_kills b ON a.id = b.user_id;
+```
+
+- 如何生成唯一序列号
+
+``sql
+
+```
+
+- 如何删除重复数据
+
+```sql
+
+```
+

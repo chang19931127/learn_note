@@ -110,7 +110,13 @@ Role savedRole = (Role)redisTemplate.execute(callBack);
 
 Redis 支持发布订阅模式
 
-两点，要有发送的消息渠道，要有订阅者，订阅这个频道
+两点，要有发送的消息渠道，要有订阅者，订阅这个频道 Message Channel
+
+```redis
+SUBSCRIBE chat
+publish char "let's go!"
+那么subscribe chat 的客户端就会收到   我们走
+```
 
 ## Redis 超时命令 ##
 

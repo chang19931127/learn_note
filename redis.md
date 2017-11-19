@@ -116,6 +116,34 @@ Redis 支持发布订阅模式
 
 同样Redis支持超时命令，明白什么意思吧
 
+## Redis可以执行Lua语言 ##
+
+Redis除了自身命令外，还可以使用Lua语言来操作，单纯的redis命令并没有什么特别的计算能力，而是用Lua语言则在很大程度上弥补了Redis的这个不足
+
+Redis中执行Lua语言是原子性的，也就是说执行Lua的是偶是不会被中断的，具有原子性，这个特性有助于Redis对并发数据一致性的支持
+
+Redis支持两种方式运行Lua脚本，一种直接输入脚本，一种执行Lua语言的文件
+
+对于直接输入的方式，Redis支持缓存脚本，只是他会使用SHA-1算法对脚本进行签名，然后把SHA-1标识返还回来，只要通过这个标识就可以运行了
+```lur
+eval 代表执行Lua语言的命令
+然后跟上Lur语言脚本
+然后跟上key 的个数，从1开始，0代表没有
+然后跟上value ，这个可填可不填
+eval "redis.call('set',KYES[1],ARGV[1])" 1 lua-key lua-value 
+这样key，value就被存入到redis中了
+get lua-key 就可以得到 lue-value
+语法就是redis.call(command,key[param1,parap2...])
+
+由于Redis具有缓存脚本的功能，所以一般使用的时候都缓存了
+首先使用
+script load (script)
+会返回给你一个SHA-1
+然后
+evalsha shastring 参数就可以了，
+当然这样的api方式java也可以用的
+```
+
 ## Redis 基础配置文件
 
 作为一个软件，必不可少的就是存在一些配置文件，我们使用者可以通过配置文件来更改软件给我们提供的功能，同样Redis也给我们提供了配置文件，文件就是redis.window.conf(Windows系统下)，redis.conf(Linux系统下)

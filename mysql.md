@@ -155,18 +155,42 @@ ON a.user_name = b.user_name WHERE a.id < b.id;
 ```
 
 - 如何在子查询中匹配多个值
-    - 子栏目1
-    - 子栏目2   
-> 什么是子查询：当一个查询是另外一个查询的条件时，称之为子查询,
->常见的子查询场景，由于子查询性能较低
+  
+什么是子查询：当一个查询是另外一个查询的条件时，称之为子查询,
 
-    - 使用子查询可以避免由子查询中的数据产生的重复
-    - 使用子查询
+常见的子查询场景，由于子查询性能较低
 
-
-- 解决同属性多值过滤问题
+使用子查询可以避免由子查询中的数据产生的重复
 
 ```sql
+--最终的结果没有重复
+select user_name from user1 where id in (select user_id from user_kills);
+--连接查询就有重复,所以就需要去重复 distinct
+select a.user_name from user1 a join user_kills b on a.id = b.user_id; 
+```
+
+使用子查询更加符合语义，更好理解，在子查询中匹配多个值
+
+```sql
+ select a.user_name,b.timestr,kills from user1 a join user_kills b on a.id = b.user_id join
+ (select user_id,max(kills) as cnt from user_kills group by user_id) c on b.user_id = c.user_id 
+ and b.kills = c.cnt;
+ --等价这个,mysql中特有的多列过滤子查询
+ select a.user_name,b.timestr,kills from user1 a join user_kills b on a.id = b.user_id where
+ (b.user_id,b.kills) in (select user_id,max(kills) from user_kills group by user_id);
+```
+
+- 解决同一属性多值过滤问题
+
+```sql
+-- table中某一个属性有多个值，但是多次出现，并且因为另外一个属性的不同，而情景不同
+-- 例如唐僧有几个技能，悟空有几个技能，存到一张表中
+-- 查询出，同时具有两个技能的人,同时具有念经和变化
+-- 使用join的实现方式 ，几个同时，就要join几次。。。
+select a.user_name,b.skill,c.skill from user1 a join user1_skills b on a.id = b.user_id
+and b.skill = '念经' join user1_skills c on c.user_id = b.user_id and b.skill = '变化'
+where b.skill_level > 0 and c.skill_level > 0;
+-- 
 
 ```
 

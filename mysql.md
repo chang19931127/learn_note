@@ -190,11 +190,26 @@ select a.user_name from user1 a join user_kills b on a.id = b.user_id;
 select a.user_name,b.skill,c.skill from user1 a join user1_skills b on a.id = b.user_id
 and b.skill = '念经' join user1_skills c on c.user_id = b.user_id and b.skill = '变化'
 where b.skill_level > 0 and c.skill_level > 0;
--- 
+-- 无敌复杂，求出具有两个技能的人
+select a.user_name,b.skill,c.skill,d.skill,e.skill from user1 a
+left join user1_skills b on a.id = b.user_id and b.skill = '念经' and b.skill_level > 0
+left join user1_skills c on a.id = c.user_id and c.skill = '变化' and c.skill_level > 0
+left join user1_skills d on a.id = d.user_id and d.skill = '腾云' and d.skill_level > 0
+left join user1_skills e on a.id = e.user_id and e.skill = '浮水' and e.skill_level > 0
+where (case when b.skill is not null then 1 else 0 end) +
+(case when c.skill is not null then 1 else 0 end) +
+(case when d.skill is not null then 1 else 0 end) +
+(case when e.skill is not null then 1 else 0 end) >= 2;
+-- group by 从句来解决,回想下 找重复
+select a.user_name from user1 a join user1_skills b on a.id = b.user_id
+where b.skill in('念经','变化','腾云','浮水') and b.skill_level > 0 
+group by a.user_name having count(*) >=2;;
 
 ```
 
 - 如何计算累进税问题
+
+累进税，不同的区间税率不同，导致结算方式不同
 ```sql
 
 ```

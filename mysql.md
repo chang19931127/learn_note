@@ -210,6 +210,19 @@ group by a.user_name having count(*) >=2;;
 - 如何计算累进税问题
 
 累进税，不同的区间税率不同，导致结算方式不同
-```sql
 
+```sql
+--使用join实现工资对不同纳税区间的匹配
+select a.user_name,money,low,hight,rate from user1 a 
+join taxRate b on a.money > b.low 
+order by user_name;
+--利用least()函数来确定每个区间的纳税额
+select user_name,money,low,hight,least(money-low,hight-low) as curmoney,rate
+from user1 a join taxRate b on a.money > b.low 
+order by user_name,low;
+--汇总
+select user_name,sum(curmoney * rate) as taxMoney 
+from(select user_name,money,low,high,least(money-low,high-money) as curmoney,
+rate from user1 a join taxRate b on a.money > b.low) a
+group by user_name;
 ```

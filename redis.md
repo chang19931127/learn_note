@@ -204,13 +204,13 @@ auto-aof-rewrite-min-size
 
 ## Redis 主从同步(复制)
 
-数据量不断的变大，对Redis的请求数量变多，那么单机Redis肯定不够用，就要考虑分布式Redis集群了，常用的就是，redis自己提供了分布式方案，也可以使用Codis集群方案，Twemproxy方案 [codis豌豆荚开源](https://github.com/CodisLabs/codis/)
+数据量不断的变大，对Redis的请求数量变多，那么单机Redis肯定不够用，就要考虑分布式Redis集群了，常用的就是，redis自己提供了分布式方案，也可以使用Codis集群方案，Twemproxy方案 [codis豌豆荚开源](https://github.com/CodisLabs/codis/),分片，集群，每个实例存储的内容都不同
 
 还是多了解下分布式的原理，这样肯定有好处
 
 集群方案我们并不能保证单点的可用性.只能保证一个节点挂了，使用其他的补上
 
-但是针对某一个redis服务，如何保证可用性，Redis给我们提供了哨兵模式(Sentinel)
+但是针对某一个redis服务，如何保证可用性，Redis给我们提供了哨兵模式(Sentinel),这个主从，无论是主，还是从，他们的数据都是相同的
 
 主从同步，通常有这样的感觉，就是说，一主多从，写用于主，读用于从，这样主改变了，复制到从中，就可以了，又是又可以多主多从，反正分布式很大很奇妙
 

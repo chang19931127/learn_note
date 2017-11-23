@@ -233,6 +233,28 @@ group by user_name;
 - 如何分析SQL查询
 
     我们这里使用的是MySQL提供的sakila数据库[官方url](http://dev.mysql.com/doc/index-other.html)看看这个网站把
+    
+    &使用explain查询SQL的执行计划&
+    
+    table:查询的那张表
+    
+    type:几个可选参数，const，eq_reg，ref，range，index，all  性能越来越差
+    
+    possible_keys:可以使用的索引，
+    
+    key: 正在使用的索引
+    
+    key_len：索引的长度，在不损失准确性的的情况下，越短越好
+    
+    ref:显示索引的那一列被使用，如果可能的话是一个常数
+    
+    rows：MYSQL认为必须检查的用来返回请求数据的行数
+    
+    extra列：出现using filesort 和 using temporary 就需要优化
+    
+```sql
+explain select max(payment_date) from payment
+```
     
 - 如何发现有问题的SQL？
 
@@ -247,4 +269,9 @@ group by user_name;
     --日志很多，因此我们需要分析日志的工具，然后生成报表，来观看，
     --推荐的工具官方mysqldumpslow 来分析日志
     --另一个工具pt-query-digest工具，更加完善把
+    --找一些需要优化的SQL
+    --查询次数多且每次查询占用时间长的SQL，前几个查询
+    --IO大的SQL，Rows examine项
+    --未命中索引的SQL，Rows examine 和Rows Send的对比
 ```
+

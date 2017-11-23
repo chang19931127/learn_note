@@ -238,8 +238,13 @@ group by user_name;
 
     使用MySQL慢查询日志对效率问题进行监控,那么如何开启这个日志尼？
 ```sql
-    show variables like 'show_query_log';
+    --开启日志
+    show variables like 'show_query_log';
     set global show_query_log_file = 'url';
     set global log_queries_not_using_indexes = on;
     set global long_query_time = 1;
+    --了解日志的内容，执行SQL的主机信息，SQL的执行信息，SQL的执行时间，SQL的内容
+    --日志很多，因此我们需要分析日志的工具，然后生成报表，来观看，
+    --推荐的工具官方mysqldumpslow 来分析日志
+    --另一个工具pt-query-digest工具，更加完善把
 ```

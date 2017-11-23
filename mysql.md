@@ -234,7 +234,7 @@ group by user_name;
 
     我们这里使用的是MySQL提供的sakila数据库[官方url](http://dev.mysql.com/doc/index-other.html)看看这个网站把
     
-    &使用explain查询SQL的执行计划&
+    使用explain查询SQL的执行计划
     
     table:查询的那张表
     

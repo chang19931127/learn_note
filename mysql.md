@@ -226,3 +226,11 @@ from(select user_name,money,low,high,least(money-low,high-money) as curmoney,
 rate from user1 a join taxRate b on a.money > b.low) a
 group by user_name;
 ```
+## MySQL数据库优化
+
+### SQL及索引优化
+
+- 如何分析SQL查询
+    我们这里使用的是MySQL提供的sakila数据库[官方url](http://dev.mysql.com/doc/index-other.html)
+    
+- 哈哈

@@ -234,4 +234,12 @@ group by user_name;
 
     我们这里使用的是MySQL提供的sakila数据库[官方url](http://dev.mysql.com/doc/index-other.html)看看这个网站把
     
-- 哈哈
+- 如何发现有问题的SQL？
+
+    使用MySQL慢查询日志对效率问题进行监控,那么如何开启这个日志尼？
+    ```sql
+    show variables like 'show_query_log';
+    set global show_query_log_file = 'url';
+    set global log_queries_not_using_indexes = on;
+    set global long_query_time = 1;
+    ```

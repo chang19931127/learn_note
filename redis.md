@@ -4,6 +4,8 @@
    Redis是基于ANSI C语言编写，接近汇编语言的机器语言，运行十分快速，其次它是基于内存的读/写，速度自然比数据库的磁盘读/写要快的多，而且相比一般的NOSQL支持的数据类型又比较多，数据结构较为简单，规则较少，因此很受互联网的欢迎，并且Redis的操作都是原子操作，[git地址](https://github.com/antirez/redis) 
    Redis在JavaWeb中一般两个使用场景，一个是缓存，另一个是需要高速读/写的场合
    
+   [云硒社区Redis教程](https://yq.aliyun.com/articles/75639)
+   
 ## Redis 和 Java结合 ##
 
 这里有一点，就是Redis 数据结构比较单一，我们java中使用的都是对象，因此我们需要将对象序列化,org.springframework.data.redis.serializer序列化

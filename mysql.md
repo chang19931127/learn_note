@@ -240,14 +240,14 @@ group by user_name;
     
     type:几个可选参数，const，eq_reg，ref，range，index，all  性能越来越差
     
-    possible_keys:可以使用的索引，
-    
+    possible_keys:可以使用的索引
+    
     key: 正在使用的索引
     
     key_len：索引的长度，在不损失准确性的的情况下，越短越好
-    
+    
     ref:显示索引的那一列被使用，如果可能的话是一个常数
-    
+    
     rows：MYSQL认为必须检查的用来返回请求数据的行数
     
     extra列：出现using filesort 和 using temporary 就需要优化
